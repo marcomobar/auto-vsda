@@ -1,0 +1,30 @@
+---
+- name: Initialize Cat9kv Nodes
+  hosts: fabric
+  gather_facts: no
+  serial: 1
+  tags:
+    - config
+    - script
+  tasks:
+    - name: Pause 1 minute
+      pause:
+        minutes: 1
+
+    - name: Run python script to initialize Cat9kv nodes
+      command: >
+        python3 ../../scripts/init_cat9kv.py {{ virl_lab }} {{ inventory_hostname }} {{ management_ip }} \
+        {{ management_mask }} {{ management_gateway }} {{ domain }} {{ jumpserver_username }} {{ jumpserver_password }} \
+        {{ jumpserver_host }} {{ jumpserver_cfg_path }}
+      delegate_to: localhost
+
+- name: Wait for fabric nodes OOB
+  hosts: fabric
+  gather_facts: no
+  tags:
+    - oob
+  tasks:
+    - name: Wait for fabric nodes to become reachable over OOB
+      wait_for_connection:
+
+      

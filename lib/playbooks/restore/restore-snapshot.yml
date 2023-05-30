@@ -1,0 +1,30 @@
+- name: Restore Virtual Machine Snapshot
+  hosts: localhost
+  gather_facts: no
+  tags:
+    - restore
+    - snapshot
+  tasks:
+    - name: "Restore snapshot {{ vm_name }}"
+      community.vmware.vmware_guest_snapshot:
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter }}"
+        folder: "{{ datacenter }}/vm/"
+        name: "{{ vm_name }}"
+        validate_certs: no
+        state: revert
+        snapshot_name: "{{ snapshot_name }}"
+      delegate_to: localhost
+    - name: "Start {{ vm_name }}"
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter }}"
+        folder: "{{ datacenter }}/vm/"
+        name: "{{ vm_name }}"
+        validate_certs: no
+        state: powered-on
+      delegate_to: localhost

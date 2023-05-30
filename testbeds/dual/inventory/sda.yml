@@ -1,0 +1,79 @@
+all:
+  vars:
+    virl_lab: Dual-Border-Edge
+    virl_lab_file: "../../../testbeds/dual/files/cml.yaml"
+    virl_path: "../../../testbeds/dual/"
+    vcenter_host: "{{ lookup('env','VCENTER_HOST') }}"
+    vcenter_username: "{{ lookup('env','VCENTER_USERNAME') }}"
+    vcenter_password: "{{ lookup('env','VCENTER_PASSWORD') }}"
+    virl_host: "{{ lookup('env','VIRL_HOST') }}"
+    virl_username: "{{ lookup('env','VIRL_USERNAME') }}"
+    virl_password: "{{ lookup('env','VIRL_PASSWORD') }}"
+    jumpserver_username: "{{ lookup('env', 'JUMPSERVER_USERNAME') }}"
+    jumpserver_password: "{{ lookup('env', 'JUMPSERVER_PASSWORD') }}"
+    jumpserver_host: "{{ lookup('env', 'JUMPSERVER_HOST') }}"
+    jumpserver_cfg_path: "{{ lookup('env', 'JUMPSERVER_CFG_PATH') }}"
+  children:
+    controllers:
+      hosts:
+        vdnac:
+        vise:
+        cml2.5:
+    nodes:
+      vars:
+        ansible_network_os: ios
+        ansible_connection: network_cli
+        ansible_user: "{{ lookup('env','NODE_USERNAME') | default('admin', true) }}"
+        ansible_password: "{{ lookup('env','NODE_PASSWORD') | default('cisco', true) }}"
+        ansible_become: true
+        ansible_become_password: "{{ lookup('env','NODE_ENABLE') | default('cisco', true) }}"
+        domain: lab.net
+      children:
+        transport:
+          hosts:
+            fusion:
+              ansible_host: 10.2.2.1
+            shared-services:
+            dnac-ise:
+            mgmt-bcp-1:
+            mgmt-bcp-2:
+            mgmt-e-1:
+            mgmt-e-2:
+        fabric:
+          children:
+            borders:
+              hosts:
+                bcp-1:
+                  ansible_host: 10.2.2.11
+                  management_ip: 10.2.2.11
+                  management_mask: 255.255.255.0
+                  management_gateway: 10.2.2.200
+                bcp-2:
+                  ansible_host: 10.2.2.12
+                  management_ip: 10.2.2.12
+                  management_mask: 255.255.255.0
+                  management_gateway: 10.2.2.200
+            edges:
+              hosts:
+                e-1:
+                  ansible_host: 10.2.2.13
+                  management_ip: 10.2.2.13
+                  management_mask: 255.255.255.0
+                  management_gateway: 10.2.2.200
+                e-2:
+                  ansible_host: 10.2.2.14
+                  management_ip: 10.2.2.14
+                  management_mask: 255.255.255.0
+                  management_gateway: 10.2.2.200
+    linux:
+      children:
+        servers:
+          hosts:
+            net-services:
+        endpoints:
+          hosts:
+            m-1:
+            m-2:
+            m-3:
+
+    
