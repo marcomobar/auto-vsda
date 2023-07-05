@@ -1,0 +1,1017 @@
+lab:
+  description: ''
+  notes: ''
+  title: dCloud1
+  version: 0.2.0
+links:
+  - id: l0
+    n1: n4
+    n2: n1
+    i1: i3
+    i2: i3
+    label: bcp-2-GigabitEthernet1/0/2<->bcp-1-GigabitEthernet1/0/2
+  - id: l1
+    n1: n1
+    n2: n2
+    i1: i4
+    i2: i2
+    label: bcp-1-GigabitEthernet1/0/3<->e-1-GigabitEthernet1/0/1
+  - id: l2
+    n1: n4
+    n2: n2
+    i1: i4
+    i2: i3
+    label: bcp-2-GigabitEthernet1/0/3<->e-1-GigabitEthernet1/0/2
+  - id: l3
+    n1: n1
+    n2: n3
+    i1: i5
+    i2: i2
+    label: bcp-1-GigabitEthernet1/0/4<->e-2-GigabitEthernet1/0/1
+  - id: l4
+    n1: n4
+    n2: n3
+    i1: i5
+    i2: i3
+    label: bcp-2-GigabitEthernet1/0/4<->e-2-GigabitEthernet1/0/2
+  - id: l5
+    n1: n5
+    n2: n1
+    i1: i2
+    i2: i2
+    label: fusion-1-GigabitEthernet2<->bcp-1-GigabitEthernet1/0/1
+  - id: l6
+    n1: n5
+    n2: n4
+    i1: i3
+    i2: i2
+    label: fusion-1-GigabitEthernet3<->bcp-2-GigabitEthernet1/0/1
+  - id: l7
+    n1: n0
+    n2: n5
+    i1: i0
+    i2: i1
+    label: shared-services-port<->fusion-1-GigabitEthernet1
+  - id: l8
+    n1: n6
+    n2: n1
+    i1: i0
+    i2: i1
+    label: mgmt-bcp-1-port<->bcp-1-GigabitEthernet0/0
+  - id: l9
+    n1: n7
+    n2: n2
+    i1: i0
+    i2: i1
+    label: mgmt-e-1-port<->e-1-GigabitEthernet0/0
+  - id: l10
+    n1: n8
+    n2: n4
+    i1: i0
+    i2: i1
+    label: mgmt-bcp-2-port<->bcp-2-GigabitEthernet0/0
+  - id: l11
+    n1: n9
+    n2: n3
+    i1: i0
+    i2: i1
+    label: mgmt-e-2-port<->e-2-GigabitEthernet0/0
+  - id: l12
+    n1: n10
+    n2: n2
+    i1: i0
+    i2: i8
+    label: c-1-ens2<->e-1-GigabitEthernet1/0/7
+  - id: l13
+    n1: n11
+    n2: n2
+    i1: i0
+    i2: i9
+    label: c-2-ens2<->e-1-GigabitEthernet1/0/8
+  - id: l14
+    n1: n12
+    n2: n3
+    i1: i0
+    i2: i9
+    label: c-3-ens2<->e-2-GigabitEthernet1/0/8
+nodes:
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n0
+    image_definition: null
+    label: shared-services
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 600
+    y: 280
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      <?xml version="1.0"?>
+      <!-- Copyright (c) 2020 by Cisco Systems, Inc.-->
+      <!-- All rights reserved. -->
+      <!-- Virtual Cat9k configuration information -->
+      <switch>
+      <!-- Virtual Board ID to indicate S1 or Doppler asic simulation -->
+        <board_id>20612</board_id>
+      <!-- Unique Serial# must be provided for each running instance -->
+        <prod_serial_number>CML12345D1</prod_serial_number>
+      <!-- Number of ports must appear before other port information -->
+        <port_count>8</port_count>
+        <port lpn="1">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+       <port lpn="2">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="3">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="4">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="5">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="6">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="7">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="8">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="9">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="10">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="11">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="12">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="13">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="14">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="15">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="16">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+      </switch>
+    cpu_limit: 100
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n1
+    image_definition: cat9kv-17.13
+    label: bcp-1
+    node_definition: catalyst9000v
+    ram: null
+    tags: []
+    x: 680
+    y: 440
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet1/0/1
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet1/0/2
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet1/0/3
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet1/0/4
+        slot: 4
+        type: physical
+      - id: i6
+        label: GigabitEthernet1/0/5
+        slot: 5
+        type: physical
+      - id: i7
+        label: GigabitEthernet1/0/6
+        slot: 6
+        type: physical
+      - id: i8
+        label: GigabitEthernet1/0/7
+        slot: 7
+        type: physical
+      - id: i9
+        label: GigabitEthernet1/0/8
+        slot: 8
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      <?xml version="1.0"?>
+      <!-- Copyright (c) 2020 by Cisco Systems, Inc.-->
+      <!-- All rights reserved. -->
+      <!-- Virtual Cat9k configuration information -->
+      <switch>
+      <!-- Virtual Board ID to indicate S1 or Doppler asic simulation -->
+        <board_id>20612</board_id>
+      <!-- Unique Serial# must be provided for each running instance -->
+        <prod_serial_number>CML12345D3</prod_serial_number>
+      <!-- Number of ports must appear before other port information -->
+        <port_count>8</port_count>
+        <port lpn="1">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+       <port lpn="2">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="3">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="4">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="5">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="6">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="7">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="8">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="9">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="10">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="11">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="12">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="13">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="14">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="15">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="16">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+      </switch>
+    cpu_limit: 100
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n2
+    image_definition: cat9kv-17.13
+    label: e-1
+    node_definition: catalyst9000v
+    ram: null
+    tags: []
+    x: 680
+    y: 520
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet1/0/1
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet1/0/2
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet1/0/3
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet1/0/4
+        slot: 4
+        type: physical
+      - id: i6
+        label: GigabitEthernet1/0/5
+        slot: 5
+        type: physical
+      - id: i7
+        label: GigabitEthernet1/0/6
+        slot: 6
+        type: physical
+      - id: i8
+        label: GigabitEthernet1/0/7
+        slot: 7
+        type: physical
+      - id: i9
+        label: GigabitEthernet1/0/8
+        slot: 8
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      <?xml version="1.0"?>
+      <!-- Copyright (c) 2020 by Cisco Systems, Inc.-->
+      <!-- All rights reserved. -->
+      <!-- Virtual Cat9k configuration information -->
+      <switch>
+      <!-- Virtual Board ID to indicate S1 or Doppler asic simulation -->
+        <board_id>20612</board_id>
+      <!-- Unique Serial# must be provided for each running instance -->
+        <prod_serial_number>CML12345D4</prod_serial_number>
+      <!-- Number of ports must appear before other port information -->
+        <port_count>8</port_count>
+        <port lpn="1">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+       <port lpn="2">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="3">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="4">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="5">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="6">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="7">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="8">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="9">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="10">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="11">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="12">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="13">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="14">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="15">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="16">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+      </switch>
+    cpu_limit: 100
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n3
+    image_definition: cat9kv-17.13
+    label: e-2
+    node_definition: catalyst9000v
+    ram: null
+    tags: []
+    x: 800
+    y: 520
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet1/0/1
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet1/0/2
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet1/0/3
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet1/0/4
+        slot: 4
+        type: physical
+      - id: i6
+        label: GigabitEthernet1/0/5
+        slot: 5
+        type: physical
+      - id: i7
+        label: GigabitEthernet1/0/6
+        slot: 6
+        type: physical
+      - id: i8
+        label: GigabitEthernet1/0/7
+        slot: 7
+        type: physical
+      - id: i9
+        label: GigabitEthernet1/0/8
+        slot: 8
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      <?xml version="1.0"?>
+      <!-- Copyright (c) 2020 by Cisco Systems, Inc.-->
+      <!-- All rights reserved. -->
+      <!-- Virtual Cat9k configuration information -->
+      <switch>
+      <!-- Virtual Board ID to indicate S1 or Doppler asic simulation -->
+        <board_id>20612</board_id>
+      <!-- Unique Serial# must be provided for each running instance -->
+        <prod_serial_number>CML12345D2</prod_serial_number>
+      <!-- Number of ports must appear before other port information -->
+        <port_count>8</port_count>
+        <port lpn="1">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+       <port lpn="2">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="3">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="4">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="5">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="6">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="7">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="8">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="9">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="10">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="11">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="12">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="13">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="14">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="15">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+        <port lpn="16">
+          <asic_id>0</asic_id>
+          <asic_ifg>0</asic_ifg>
+          <asic_slice>0</asic_slice>
+        </port>
+      </switch>
+    cpu_limit: 100
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n4
+    image_definition: cat9kv-17.13
+    label: bcp-2
+    node_definition: catalyst9000v
+    ram: null
+    tags: []
+    x: 800
+    y: 440
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet0/0
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet1/0/1
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet1/0/2
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet1/0/3
+        slot: 3
+        type: physical
+      - id: i5
+        label: GigabitEthernet1/0/4
+        slot: 4
+        type: physical
+      - id: i6
+        label: GigabitEthernet1/0/5
+        slot: 5
+        type: physical
+      - id: i7
+        label: GigabitEthernet1/0/6
+        slot: 6
+        type: physical
+      - id: i8
+        label: GigabitEthernet1/0/7
+        slot: 7
+        type: physical
+      - id: i9
+        label: GigabitEthernet1/0/8
+        slot: 8
+        type: physical
+  - boot_disk_size: null
+    configuration: |2-
+
+      hostname fusion-1
+      !
+      username sdaadmin privilege 15 secret C1sco12345
+      enable secret C1sco12345
+      no ip domain lookup
+      ip domain name dcloud.lab
+      !
+      ip ssh version 2
+      crypto key generate rsa modulus 2048
+
+      int GigabitEthernet1
+      ip address 198.18.128.55 255.255.192.0
+      no shutdown
+
+      int GigabitEthernet2
+      no shutdown
+
+      int GigabitEthernet2.100
+      encap dot1q 100
+      ip address 172.16.1.0 255.255.255.254
+      no shutdown
+
+      int GigabitEthernet3
+      no shutdown
+
+      int GigabitEthernet3.100
+      encap dot1q 100
+      ip address 172.16.1.2 255.255.255.254
+      no shutdown
+
+      interface GigabitEthernet2.1
+       encapsulation dot1Q 3001
+       ip address 172.16.2.2 255.255.255.252
+       no shutdown
+      interface GigabitEthernet2.2
+       encapsulation dot1Q 3010
+       ip address 172.16.2.6 255.255.255.252
+       no shutdown
+      interface GigabitEthernet3.1
+       encapsulation dot1Q 3002
+       ip address 172.16.2.10 255.255.255.252
+       no shutdown
+      interface GigabitEthernet3.2
+       encapsulation dot1Q 3020
+       ip address 172.16.2.14 255.255.255.252
+       no shutdown
+
+      interface loopback 0
+      description DNAC Mgmt Interface
+      ip address 172.16.0.10 255.255.255.255
+
+
+      router bgp 65000
+       network 0.0.0.0
+       neighbor 172.16.2.1 remote-as 65101
+       neighbor 172.16.2.5 remote-as 65101
+       neighbor 172.16.2.9 remote-as 65101
+       neighbor 172.16.2.13 remote-as 65101
+
+      logging source-interface Loopback0
+      !
+      snmp-server community ro ro
+      snmp-server community rw rw
+      !
+      snmp-server ifindex persist
+      !
+      line vty 0 15
+       login local
+       transport input ssh
+      !
+
+      ip route 172.16.0.0 255.255.255.240 172.16.1.1 254
+      ip route 172.16.0.0 255.255.255.240 172.16.1.3 254
+      ip route 0.0.0.0 0.0.0.0 198.18.128.1
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n5
+    image_definition: null
+    label: fusion-1
+    node_definition: cat8000v
+    ram: null
+    tags: []
+    x: 720
+    y: 360
+    interfaces:
+      - id: i0
+        label: Loopback0
+        type: loopback
+      - id: i1
+        label: GigabitEthernet1
+        slot: 0
+        type: physical
+      - id: i2
+        label: GigabitEthernet2
+        slot: 1
+        type: physical
+      - id: i3
+        label: GigabitEthernet3
+        slot: 2
+        type: physical
+      - id: i4
+        label: GigabitEthernet4
+        slot: 3
+        type: physical
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n6
+    image_definition: null
+    label: mgmt-bcp-1
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 520
+    y: 440
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n7
+    image_definition: null
+    label: mgmt-e-1
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 520
+    y: 520
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n8
+    image_definition: null
+    label: mgmt-bcp-2
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 960
+    y: 440
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: bridge0
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n9
+    image_definition: null
+    label: mgmt-e-2
+    node_definition: external_connector
+    ram: null
+    tags: []
+    x: 960
+    y: 520
+    interfaces:
+      - id: i0
+        label: port
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      #cloud-config
+      hostname: client-1
+      manage_etc_hosts: True
+      system_info:
+        default_user:
+          name: cisco
+      password: cisco
+      chpasswd: { expire: False }
+      ssh_pwauth: True
+      ssh_authorized_keys:
+         - your-ssh-pubkey-line-goes-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n10
+    image_definition: ubuntu-22-04-client
+    label: c-1
+    node_definition: ubuntu
+    ram: null
+    tags: []
+    x: 600
+    y: 640
+    interfaces:
+      - id: i0
+        label: ens2
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      #cloud-config
+      hostname: client-2
+      manage_etc_hosts: True
+      system_info:
+        default_user:
+          name: cisco
+      password: cisco
+      chpasswd: { expire: False }
+      ssh_pwauth: True
+      ssh_authorized_keys:
+         - your-ssh-pubkey-line-goes-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n11
+    image_definition: ubuntu-22-04-client
+    label: c-2
+    node_definition: ubuntu
+    ram: null
+    tags: []
+    x: 680
+    y: 640
+    interfaces:
+      - id: i0
+        label: ens2
+        slot: 0
+        type: physical
+  - boot_disk_size: null
+    configuration: |-
+      #cloud-config
+      hostname: client-3
+      manage_etc_hosts: True
+      system_info:
+        default_user:
+          name: cisco
+      password: cisco
+      chpasswd: { expire: False }
+      ssh_pwauth: True
+      ssh_authorized_keys:
+         - your-ssh-pubkey-line-goes-here
+    cpu_limit: null
+    cpus: null
+    data_volume: null
+    hide_links: false
+    id: n12
+    image_definition: ubuntu-22-04-client
+    label: c-3
+    node_definition: ubuntu
+    ram: null
+    tags: []
+    x: 800
+    y: 640
+    interfaces:
+      - id: i0
+        label: ens2
+        slot: 0
+        type: physical
+annotations:
+  - border_color: '#0892EBFF'
+    border_radius: 10
+    border_style: ''
+    color: '#FFFFFFFF'
+    thickness: 1
+    type: rectangle
+    x1: 600.0
+    y1: 400.0
+    x2: 280.0
+    y2: 160.0
+    z_index: 0
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#0892EBFF'
+    rotation: 0
+    text_bold: false
+    text_content: SDA Fabric
+    text_font: monospace
+    text_italic: false
+    text_size: 15
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 760.0
+    y1: 400.0
+    z_index: 1
+  - border_color: '#00000000'
+    border_style: ''
+    color: '#808080FF'
+    rotation: 0
+    text_bold: false
+    text_content: ''
+    text_font: monospace
+    text_italic: false
+    text_size: 12
+    text_unit: pt
+    thickness: 1
+    type: text
+    x1: 680.0
+    y1: 520.0
+    z_index: 2

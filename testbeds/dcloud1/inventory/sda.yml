@@ -1,0 +1,74 @@
+all:
+  vars:
+    virl_lab: dCloud1
+    virl_lab_file: "../../../testbeds/dcloud1/files/cml.yaml"
+    virl_path: "../../../testbeds/dcloud1/"
+    vcenter_host: "{{ lookup('env','VCENTER_HOST') }}"
+    vcenter_username: "{{ lookup('env','VCENTER_USERNAME') }}"
+    vcenter_password: "{{ lookup('env','VCENTER_PASSWORD') }}"
+    virl_host: "{{ lookup('env','VIRL_HOST') }}"
+    virl_username: "{{ lookup('env','VIRL_USERNAME') }}"
+    virl_password: "{{ lookup('env','VIRL_PASSWORD') }}"
+    jumpserver_username: "{{ lookup('env', 'JUMPSERVER_USERNAME') }}"
+    jumpserver_password: "{{ lookup('env', 'JUMPSERVER_PASSWORD') }}"
+    jumpserver_host: "{{ lookup('env', 'JUMPSERVER_HOST') }}"
+    jumpserver_cfg_path: "{{ lookup('env', 'JUMPSERVER_CFG_PATH') }}"
+  children:
+    controllers:
+      hosts:
+        vdnac:
+        vise:
+    nodes:
+      vars:
+        ansible_network_os: ios
+        ansible_connection: network_cli
+        ansible_user: "{{ lookup('env','NODE_USERNAME') | default('admin', true) }}"
+        ansible_password: "{{ lookup('env','NODE_PASSWORD') | default('cisco', true) }}"
+        ansible_become: true
+        ansible_become_password: "{{ lookup('env','NODE_ENABLE') | default('cisco', true) }}"
+        domain: dcloud.lab
+      children:
+        transport:
+          hosts:
+            fusion:
+              ansible_host: 198.18.128.55
+            shared-services:
+            mgmt-bcp-1:
+            mgmt-bcp-2:
+            mgmt-e-1:
+            mgmt-e-2:
+        fabric:
+          children:
+            borders:
+              hosts:
+                bcp-1:
+                  ansible_host: 198.18.128.61
+                  management_ip: 198.18.128.61
+                  management_mask: 255.255.192.0
+                  management_gateway: 198.18.128.1
+                bcp-2:
+                  ansible_host: 198.18.128.62
+                  management_ip: 198.18.128.62
+                  management_mask: 255.255.192.0
+                  management_gateway: 198.18.128.1
+            edges:
+              hosts:
+                e-1:
+                  ansible_host: 198.18.128.63
+                  management_ip: 198.18.128.63
+                  management_mask: 255.255.192.0
+                  management_gateway: 198.18.128.1
+                e-2:
+                  ansible_host: 198.18.128.64
+                  management_ip: 198.18.128.64
+                  management_mask: 255.255.192.0
+                  management_gateway: 198.18.128.1
+    linux:
+      children:
+        endpoints:
+          hosts:
+            c-1:
+            c-2:
+            c-3:
+
+    

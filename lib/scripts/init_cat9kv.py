@@ -17,10 +17,10 @@ management_mask = sys.argv[4]
 management_gateway = sys.argv[5]
 domain = sys.argv[6]
 
-jumpserver_username = sys.argv[7]
-jumpserver_password = sys.argv[8]
-jumpserver_infra_host = sys.argv[9]
-jumpserver_cfg_path = sys.argv[10]
+# jumpserver_username = sys.argv[7]
+# jumpserver_password = sys.argv[8]
+jumpserver_host = sys.argv[7]
+# jumpserver_cfg_path = sys.argv[10]
 
 
 node_path = "/" + virl_lab + "/" + node_name + "/0"
@@ -82,11 +82,13 @@ child.send('\r')
 child.expect('\(config\)#')
 child.sendline('ip ssh version 2')
 child.expect('\(config\)#')
-child.sendline('ip ssh source-interface GigabitEthernet 0/0')
+child.sendline('ip tftp source-interface GigabitEthernet 0/0')
 child.expect('\(config\)#')
-child.sendline('line vty 0 15')
-child.sendline('login local')
-child.sendline('exit')
+# child.sendline('ip ssh source-interface GigabitEthernet 0/0')
+# child.expect('\(config\)#')
+# child.sendline('line vty 0 15')
+# child.sendline('login local')
+# child.sendline('exit')
 child.sendline('interface GigabitEthernet0/0')
 child.expect('\(config-if\)#')
 child.sendline('ip address %s %s' % (management_ip, management_mask))
@@ -102,7 +104,10 @@ child.sendline('\r')
 time.sleep(3)
 child.sendline('\r')
 child.expect('#')
-child.sendline('copy scp://%s:%s@%s/%s/%s-confg startup-config' % (jumpserver_username, jumpserver_password, jumpserver_infra_host, jumpserver_cfg_path, node_name))
+# child.sendline('copy scp://%s:%s@%s/%s/%s-confg startup-config' % (jumpserver_username, jumpserver_password, jumpserver_infra_host, jumpserver_cfg_path, node_name))
+# child.expect('Destination filename \[startup-config\]?')
+# child.sendline('\r')
+child.sendline('copy tftp://%s/%s-confg startup-config' % (jumpserver_host, node_name))
 child.expect('Destination filename \[startup-config\]?')
 child.sendline('\r')
 

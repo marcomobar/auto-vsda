@@ -5,6 +5,7 @@ __pycache__/
 
 # testbeds
 testbeds/dual/.env
+testbeds/dcloud1/.env
 testbeds/single/
 
 # C extensions

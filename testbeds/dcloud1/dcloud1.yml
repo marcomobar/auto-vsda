@@ -1,0 +1,27 @@
+# Restore Snapshots
+
+- import_playbook: ../../lib/playbooks/restore/restore-snapshot.yml
+  tags:
+    - ise_vm
+    - vm
+  vars:
+    vm_name: vise
+    snapshot_name: dcloud1
+    datacenter: DC
+
+- import_playbook: ../../lib/playbooks/restore/restore-snapshot.yml
+  tags:
+   - dnac_vm
+   - vm
+  vars:
+    vm_name: vdnac
+    snapshot_name: dcloud1
+    datacenter: DC
+
+# Init CML2 lab
+
+- import_playbook: ../../lib/playbooks/init/init-cml2.yml
+
+# Init Cat9kv nodes
+
+- import_playbook: ../../lib/playbooks/init/init-cat9kv.yml
