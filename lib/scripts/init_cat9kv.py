@@ -114,7 +114,7 @@ child.sendline('\r')
 '''
 Configuration
 '''
-time.sleep(3)
+time.sleep(20)
 child.sendline('\r')
 child.expect('#')
 child.sendline('reload')

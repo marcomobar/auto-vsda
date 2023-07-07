@@ -72,29 +72,29 @@
         user: "{{ virl_username }}"
         password: "{{ virl_password }}"
         lab: "{{ virl_lab }}"
-        state: started 
-
-- name: Start servers
-  hosts: servers
-  connection: local
-  gather_facts: no
-  tags:
-    - cml2
-    - start
-    - machines
-  tasks:
-    - name: Pause 1 minute
-      pause:
-        minutes: 1
-
-    - name: Start machines
-      virl_node:
-        name: "{{ inventory_hostname }}"
-        host: "{{ virl_host }}"
-        user: "{{ virl_username }}"
-        password: "{{ virl_password }}"
-        lab: "{{ virl_lab }}"
         state: started
+
+#- name: Start servers
+#  hosts: servers
+#  connection: local
+#  gather_facts: no
+#  tags:
+#    - cml2
+#    - start
+#    - machines
+#  tasks:
+#    - name: Pause 1 minute
+#      pause:
+#        minutes: 1
+
+#    - name: Start servers
+#      virl_node:
+#        name: "{{ inventory_hostname }}"
+#        host: "{{ virl_host }}"
+#        user: "{{ virl_username }}"
+#        password: "{{ virl_password }}"
+#        lab: "{{ virl_lab }}"
+#        state: started
 
 - name: Start endpoints
   hosts: endpoints

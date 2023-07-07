@@ -30,7 +30,7 @@ all:
       children:
         transport:
           hosts:
-            fusion:
+            fusion-1:
               ansible_host: 198.18.128.55
             shared-services:
             mgmt-bcp-1:
@@ -70,5 +70,3 @@ all:
             c-1:
             c-2:
             c-3:
-
-    
