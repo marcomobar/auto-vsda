@@ -35,15 +35,20 @@
         file: "{{ virl_lab_file }}"
       #register: results
 
+# serial 1 is needed to avoid traceback for first fabric node
 - name: Start fabric nodes
   hosts: fabric
   connection: local
   gather_facts: no
+  serial: 1 
   tags:
     - cml2
     - start
     - fabric
   tasks:
+    - name: Pause 1 minute
+      pause:
+        minutes: 1
     - name: Start fabric nodes
       virl_node:
         name: "{{ inventory_hostname }}"

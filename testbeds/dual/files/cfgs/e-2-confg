@@ -1,12 +1,11 @@
 
 !
-! Last configuration change at 01:52:46 UTC Mon May 29 2023 by sdaadmin
+! Last configuration change at 03:55:04 UTC Sat Jul 29 2023 by sdaadmin
 !
-version 17.11
+version 17.13
 service timestamps debug datetime msec
 service timestamps log datetime msec
 service password-encryption
-service call-home
 platform punt-keepalive disable-kernel-core
 !
 hostname e-2
@@ -34,11 +33,11 @@ aaa new-model
 !
 !
 aaa group server radius dnac-client-radius-group
- server name dnac-radius_10.2.2.29
+ server name dnac-radius_10.5.39.29
  ip radius source-interface Loopback0
 !
 aaa group server radius dnac-network-radius-group
- server name dnac-radius_10.2.2.29
+ server name dnac-radius_10.5.39.29
  ip radius source-interface Loopback0
 !
 aaa authentication login default local
@@ -55,8 +54,7 @@ aaa accounting exec default start-stop group dnac-network-radius-group
 !
 !
 aaa server radius dynamic-author
- client 10.2.2.29 server-key 7 05283E03204E5D47485744
- client 10.5.39.29 server-key 7 03276307070D32021F5B4A
+ client 10.5.39.29 server-key 7 08027442081B165943595F
 !
 aaa session-id common
 switch 1 provision c9kv-uadp-8p
@@ -70,38 +68,17 @@ ip routing
 !
 !
 !
-ip name-server 10.2.2.100
+ip name-server 10.5.39.27
 ip domain lookup source-interface Loopback0
 ip domain name lab.net
 ip dhcp relay information option
 !
 !
 !
-ip dhcp snooping vlan 1021-1022
 ip dhcp snooping
 login on-success log
 vtp mode transparent
-!
-device-sensor filter-list lldp list iseLLDP
- tlv name system-name
- tlv name system-description
- tlv name system-capabilities
-!
-device-sensor filter-list dhcp list iseDHCP
- option name host-name
- option name parameter-request-list
- option name class-identifier
- option name v-i-vendor-class
-!
-device-sensor filter-list cdp list iseCDP
- tlv name device-name
- tlv name capabilities-type
- tlv name version-type
- tlv name platform-type
-device-sensor filter-spec dhcp include list iseDHCP
-device-sensor filter-spec lldp include list iseLLDP
-device-sensor filter-spec cdp include list iseCDP
-device-sensor notify all-changes
+vtp version 1
 !
 !
 !
@@ -112,17 +89,11 @@ device-sensor notify all-changes
 mpls label mode all-vrfs protocol all-afs per-vrf
 !
 !
-flow exporter 10.2.2.15
- destination 10.2.2.15
+flow exporter 10.5.39.15
+ destination 10.5.39.15
  transport udp 6007
 !
-access-session attributes filter-list list Def_Acct_List
- cdp
- lldp
- dhcp
- http
-access-session accounting attributes filter-spec include list Def_Acct_List
-access-session acl default passthrough
+access-session mac-move deny
 device-tracking tracking
 !
 device-tracking policy IPDT_POLICY
@@ -133,19 +104,22 @@ device-tracking policy IPDT_POLICY
 crypto pki trustpoint SLA-TrustPoint
  enrollment pkcs12
  revocation-check crl
+ hash sha256
 !
 crypto pki trustpoint TP-self-signed-3301994362
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-3301994362
  revocation-check none
  rsakeypair TP-self-signed-3301994362
+ hash sha256
 !
 crypto pki trustpoint DNAC-CA
  enrollment mode ra
  enrollment terminal
  usage ssl-client
  revocation-check crl none
- source interface GigabitEthernet0/0
+ source interface Loopback0
+ hash sha256
 !
 !
 crypto pki certificate chain SLA-TrustPoint
@@ -174,11 +148,10 @@ service-template DefaultCriticalAccess_SRV_TEMPLATE
  access-group IPV4_CRITICAL_AUTH_ACL
  access-group IPV6_CRITICAL_AUTH_ACL
 dot1x system-auth-control
-dot1x critical eapol
 archive
  log config
   notify syslog contenttype plaintext
-memory free low-watermark processor 75895
+memory free low-watermark processor 74799
 !
 system mtu 1550
 diagnostic bootup level minimal
@@ -212,29 +185,20 @@ errdisable recovery cause psp
 errdisable recovery cause mrp-miscabling
 errdisable recovery cause loopdetect
 !
+enable secret 9 $9$7KcD5YVDVh/yKE$xt307voIFyWUy9iXg/xSQBiz3kf2UnlQBa.MfUtYTnQ
 !
-enable secret 9 $9$iPhWYCxqqiX7ME$xIG6Q7DGC24PP1dbFkg5rtqV8WqSFmEt/6/fEMeDBa.
-!
-username sdaadmin privilege 15 secret 9 $9$runX5QWl2AHnAU$5NqCOGXHxpcVpWIF/7zCT.dUiyfnMhCY3BoT/ZoNdyM
+username sdaadmin privilege 15 secret 9 $9$idr2Himx4VNz0E$B1vrcDJVYVx0uJFM7gFWBHfLkbk3jePGZFB9osCfzPI
 !
 redundancy
  mode sso
-crypto engine compliance shield disable
 !
 !
 !
 !
-!
-vlan 1021
- name corp
-!
-vlan 1022
- name guest
 !
 vlan 2046
  name VOICE_VLAN
 !
-lldp run
 class-map type control subscriber match-all AAA_SVR_DOWN_AUTHD_HOST
  match authorization-status authorized
  match result-type aaa-timeout
@@ -684,15 +648,9 @@ interface LISP0.4099
 interface LISP0.4100
  vrf forwarding GUEST_VN
 !
-interface L2LISP0
-!
-interface L2LISP0.8188
-!
-interface L2LISP0.8189
-!
 interface GigabitEthernet0/0
  vrf forwarding Mgmt-vrf
- ip address 10.2.2.14 255.255.255.0
+ ip address 10.5.39.21 255.255.255.0
  negotiation auto
 !
 interface GigabitEthernet1/0/1
@@ -708,92 +666,28 @@ interface GigabitEthernet1/0/2
  ip router isis 
 !
 interface GigabitEthernet1/0/3
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface GigabitEthernet1/0/4
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface GigabitEthernet1/0/5
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface GigabitEthernet1/0/6
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface GigabitEthernet1/0/7
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface GigabitEthernet1/0/8
- switchport mode access
  device-tracking attach-policy IPDT_POLICY
- shutdown
- dot1x timeout tx-period 7
- dot1x max-reauth-req 3
- source template DefaultWiredDot1xClosedAuth
- spanning-tree portfast
- spanning-tree bpduguard enable
 !
 interface Vlan1
  no ip address
 !
-interface Vlan1021
- description Configured from Cisco DNA-Center
- mac-address 0000.0c9f.fc3e
- vrf forwarding CORP_VN
- ip address 10.1.1.1 255.255.255.0
- ip helper-address 10.2.2.100
- no ip redirects
- ip route-cache same-interface
- no lisp mobility liveness test
- lisp mobility corp-IPV4
-!
-interface Vlan1022
- description Configured from Cisco DNA-Center
- mac-address 0000.0c9f.fc87
- vrf forwarding GUEST_VN
- ip address 10.10.10.1 255.255.255.0
- ip helper-address 10.2.2.100
- no ip redirects
- ip route-cache same-interface
- no lisp mobility liveness test
- lisp mobility guest-IPV4
-!
 router lisp
- domain-id 578399941
+ domain-id 2889545188
  locator-table default
  locator-set rloc_b084e6b6-e17f-4fc4-9f54-6a1796fbfc5b
   IPv4-interface Loopback0 priority 10 weight 10
@@ -804,9 +698,9 @@ router lisp
   encapsulation vxlan
   itr map-resolver 172.20.16.1
   itr map-resolver 172.20.16.2
-  etr map-server 172.20.16.1 key 7 101B514A54424A0E5D57787B267C663627
+  etr map-server 172.20.16.1 key 7 11594A504745080D00787E707C67317611
   etr map-server 172.20.16.1 proxy-reply
-  etr map-server 172.20.16.2 key 7 124C5D44435E54017B7876783161771002
+  etr map-server 172.20.16.2 key 7 06565C741C190A180145475F58502E7F26
   etr map-server 172.20.16.2 proxy-reply
   etr
   sgt
@@ -818,19 +712,15 @@ router lisp
   itr map-resolver 172.20.16.1
   itr map-resolver 172.20.16.2
   itr
-  etr map-server 172.20.16.1 key 7 075A791F1F5C41004641595C067E7E272D
+  etr map-server 172.20.16.1 key 7 08711F1B594E0616165959507E7F207C31
   etr map-server 172.20.16.1 proxy-reply
-  etr map-server 172.20.16.2 key 7 065357721D1B511C5444405B0E507F2821
+  etr map-server 172.20.16.2 key 7 00544053540C08070B73191A5D4D014310
   etr map-server 172.20.16.2 proxy-reply
   etr
   exit-service-ethernet
  !
  instance-id 4099
   remote-rloc-probe on-route-change
-  dynamic-eid corp-IPV4
-   database-mapping 10.1.1.0/24 locator-set rloc_b084e6b6-e17f-4fc4-9f54-6a1796fbfc5b
-   exit-dynamic-eid
-  !
   service ipv4
    eid-table vrf CORP_VN
    map-cache 0.0.0.0/0 map-request
@@ -840,32 +730,10 @@ router lisp
  !
  instance-id 4100
   remote-rloc-probe on-route-change
-  dynamic-eid guest-IPV4
-   database-mapping 10.10.10.0/24 locator-set rloc_b084e6b6-e17f-4fc4-9f54-6a1796fbfc5b
-   exit-dynamic-eid
-  !
   service ipv4
    eid-table vrf GUEST_VN
    map-cache 0.0.0.0/0 map-request
    exit-service-ipv4
-  !
-  exit-instance-id
- !
- instance-id 8188
-  remote-rloc-probe on-route-change
-  service ethernet
-   eid-table vlan 1021
-   database-mapping mac locator-set rloc_b084e6b6-e17f-4fc4-9f54-6a1796fbfc5b
-   exit-service-ethernet
-  !
-  exit-instance-id
- !
- instance-id 8189
-  remote-rloc-probe on-route-change
-  service ethernet
-   eid-table vlan 1022
-   database-mapping mac locator-set rloc_b084e6b6-e17f-4fc4-9f54-6a1796fbfc5b
-   exit-service-ethernet
   !
   exit-instance-id
  !
@@ -886,16 +754,17 @@ ip http server
 ip http authentication local
 ip http secure-server
 ip http max-connections 16
-ip http client source-interface GigabitEthernet0/0
+ip http client source-interface Loopback0
+ip tftp source-interface GigabitEthernet0/0
 ip route 0.0.0.0 0.0.0.0 172.20.16.132 254 name TEMP_FLOATING_ROUTE
 ip route 0.0.0.0 0.0.0.0 172.20.16.136 254 name TEMP_FLOATING_ROUTE
-ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.2.2.200
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.5.39.1
 ip ssh bulk-mode 131072
-ip ssh source-interface GigabitEthernet0/0
+ip ssh source-interface Loopback0
 !
 !
 ip access-list extended ACL_WEBAUTH_REDIRECT
- 50 deny ip any host 10.2.2.29
+ 50 deny ip any host 10.5.39.29
  500 permit tcp any any eq www
  600 permit tcp any any eq 443
  700 permit tcp any any eq 8443
@@ -920,15 +789,15 @@ ip sla 2
   threshold 3
 ip sla schedule 2 life forever start-time now
 ip sla 3
- icmp-echo 10.2.2.29 source-ip 172.20.16.4
+ icmp-echo 10.5.39.29 source-ip 172.20.16.4
   threshold 3
 ip sla schedule 3 life forever start-time now
 logging source-interface Loopback0
-logging host 10.2.2.15 vrf Mgmt-vrf
+logging host 10.5.39.15
 !
 snmp-server community ro RO
 snmp-server community rw RW
-snmp-server trap-source GigabitEthernet0/0
+snmp-server trap-source Loopback0
 snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
 snmp-server enable traps flowmon
 snmp-server enable traps entity-perf throughput-notif
@@ -946,10 +815,10 @@ snmp-server enable traps ospf cisco-specific errors
 snmp-server enable traps ospf cisco-specific retransmit
 snmp-server enable traps ospf cisco-specific lsa
 snmp-server enable traps bfd
-snmp-server enable traps license
 snmp-server enable traps smart-license
 snmp-server enable traps auth-framework sec-violation
 snmp-server enable traps rep
+snmp-server enable traps aaa_server
 snmp-server enable traps memory bufferpeak
 snmp-server enable traps config-copy
 snmp-server enable traps config
@@ -1017,7 +886,7 @@ snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
 snmp-server enable traps rf
 snmp-server enable traps mpls vpn
 snmp-server enable traps mpls rfc vpn
-snmp-server host 10.2.2.15 vrf Mgmt-vrf version 2c rw 
+snmp-server host 10.5.39.15 version 2c rw 
 snmp ifmib ifindex persist
 !
 radius-server attribute 6 on-for-login-auth
@@ -1029,12 +898,12 @@ radius-server attribute 31 send nas-port-detail mac-only
 radius-server dead-criteria time 5 tries 3
 radius-server deadtime 3
 !
-radius server dnac-radius_10.2.2.29
- address ipv4 10.2.2.29 auth-port 1812 acct-port 1813
+radius server dnac-radius_10.5.39.29
+ address ipv4 10.5.39.29 auth-port 1812 acct-port 1813
  timeout 4
  retransmit 3
  automate-tester username dummy ignore-acct-port probe-on
- pac key 7 072C19404F0B0A4B464058
+ pac key 7 00272B0A055918485E731F
 !
 !
 !
@@ -1050,8 +919,8 @@ ipv6 access-list IPV6_PRE_AUTH_ACL
 control-plane
  service-policy input system-cpp-policy
 !
+!
 cts role-based enforcement
-cts role-based enforcement vlan-list 1021-1022
 !
 line con 0
  stopbits 1
@@ -1064,13 +933,6 @@ line vty 5 15
  login authentication VTY_authen
  transport input ssh
 !
-call-home
- ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
- ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
- contact-email-addr sch-smart-licensing@cisco.com
- profile "CiscoTAC-1"
-  active
-  destination transport-method http
 !
 !
 !

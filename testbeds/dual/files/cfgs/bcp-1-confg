@@ -1,12 +1,11 @@
 
 !
-! Last configuration change at 01:49:22 UTC Mon May 29 2023 by sdaadmin
+! Last configuration change at 03:52:01 UTC Sat Jul 29 2023 by sdaadmin
 !
-version 17.11
+version 17.13
 service timestamps debug datetime msec
 service timestamps log datetime msec
 service password-encryption
-service call-home
 platform punt-keepalive disable-kernel-core
 !
 hostname bcp-1
@@ -40,11 +39,11 @@ aaa new-model
 !
 !
 aaa group server radius dnac-client-radius-group
- server name dnac-radius_10.2.2.29
+ server name dnac-radius_10.5.39.29
  ip radius source-interface Loopback0
 !
 aaa group server radius dnac-network-radius-group
- server name dnac-radius_10.2.2.29
+ server name dnac-radius_10.5.39.29
  ip radius source-interface Loopback0
 !
 aaa authentication login default local
@@ -61,8 +60,7 @@ aaa accounting exec default start-stop group dnac-network-radius-group
 !
 !
 aaa server radius dynamic-author
- client 10.2.2.29 server-key 7 08027442081B165943595F
- client 10.5.39.29 server-key 7 14342A070D063965757A60
+ client 10.5.39.29 server-key 7 02253C570A041C6F1D1C5A
 !
 aaa session-id common
 switch 1 provision c9kv-uadp-8p
@@ -76,7 +74,7 @@ ip routing
 !
 !
 !
-ip name-server 10.2.2.100
+ip name-server 10.5.39.27
 ip domain lookup source-interface Loopback0
 ip domain name lab.net
 !
@@ -84,6 +82,7 @@ ip domain name lab.net
 !
 login on-success log
 vtp mode transparent
+vtp version 1
 !
 !
 !
@@ -94,8 +93,8 @@ vtp mode transparent
 mpls label mode all-vrfs protocol all-afs per-vrf
 !
 !
-flow exporter 10.2.2.15
- destination 10.2.2.15
+flow exporter 10.5.39.15
+ destination 10.5.39.15
  transport udp 6007
 !
 access-session mac-move deny
@@ -103,19 +102,22 @@ access-session mac-move deny
 crypto pki trustpoint SLA-TrustPoint
  enrollment pkcs12
  revocation-check crl
+ hash sha256
 !
 crypto pki trustpoint TP-self-signed-1424791285
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-1424791285
  revocation-check none
  rsakeypair TP-self-signed-1424791285
+ hash sha256
 !
 crypto pki trustpoint DNAC-CA
  enrollment mode ra
  enrollment terminal
  usage ssl-client
  revocation-check crl none
- source interface GigabitEthernet0/0
+ source interface Loopback0
+ hash sha256
 !
 !
 crypto pki certificate chain SLA-TrustPoint
@@ -141,7 +143,7 @@ dot1x system-auth-control
 archive
  log config
   notify syslog contenttype plaintext
-memory free low-watermark processor 75895
+memory free low-watermark processor 74799
 !
 system mtu 1550
 diagnostic bootup level minimal
@@ -151,14 +153,12 @@ spanning-tree extend system-id
 !
 !
 !
+enable secret 9 $9$S9keKUUBneL5tU$Uj/fsxlNG2u8NcPpT2Ocir/YUTjOsNHgsWhSCaIKP16
 !
-enable secret 9 $9$XVAPE8ZKl7NqQ.$cs92WJSXcjfh072mQpV34x45evU9txhVwRu8S7sBJYw
-!
-username sdaadmin privilege 15 secret 9 $9$Eqc/S2oYPqI/OU$CILpK4cc86ivx/fk57DUaNFFDNmr0n6BwSy2L789lnc
+username sdaadmin privilege 15 secret 9 $9$lqEzsuiiz83CS.$h34fO8XCzvKrXcg.88RQ3TEQQ9fOl.Ra84X.rT7P0Gc
 !
 redundancy
  mode sso
-crypto engine compliance shield disable
 !
 !
 !
@@ -167,11 +167,11 @@ crypto engine compliance shield disable
 vlan 100
  name FUSION
 !
-vlan 3001
- name 3001
-!
 vlan 3010
  name 3010
+!
+vlan 3020
+ name 3020
 !
 !
 class-map match-any system-cpp-police-topology-control
@@ -229,16 +229,6 @@ interface Loopback0
  ip address 172.20.16.1 255.255.255.255
  ip router isis 
 !
-interface Loopback1021
- description Loopback Border
- vrf forwarding CORP_VN
- ip address 10.1.1.1 255.255.255.255
-!
-interface Loopback1022
- description Loopback Border
- vrf forwarding GUEST_VN
- ip address 10.10.10.1 255.255.255.255
-!
 interface LISP0
 !
 interface LISP0.4099
@@ -249,7 +239,7 @@ interface LISP0.4100
 !
 interface GigabitEthernet0/0
  vrf forwarding Mgmt-vrf
- ip address 10.2.2.11 255.255.255.0
+ ip address 10.5.39.18 255.255.255.0
  negotiation auto
 !
 interface GigabitEthernet1/0/1
@@ -275,42 +265,39 @@ interface GigabitEthernet1/0/4
  ip router isis 
 !
 interface GigabitEthernet1/0/5
- shutdown
 !
 interface GigabitEthernet1/0/6
- shutdown
 !
 interface GigabitEthernet1/0/7
- shutdown
 !
 interface GigabitEthernet1/0/8
- shutdown
 !
 interface Vlan1
  no ip address
+ shutdown
 !
 interface Vlan100
  ip address 172.16.0.2 255.255.255.252
  no ip redirects
  load-interval 30
 !
-interface Vlan3001
+interface Vlan3010
  description vrf interface to External router
  vrf forwarding CORP_VN
- ip address 172.17.0.1 255.255.255.252
+ ip address 172.17.0.9 255.255.255.252
  no ip redirects
  ip route-cache same-interface
 !
-interface Vlan3010
+interface Vlan3020
  description vrf interface to External router
  vrf forwarding GUEST_VN
- ip address 172.17.0.5 255.255.255.252
+ ip address 172.17.0.13 255.255.255.252
  no ip redirects
  ip route-cache same-interface
 !
 router lisp
- domain-id 578399941
- multihoming-id 44741
+ domain-id 2889545188
+ multihoming-id 62948
  locator-table default
  locator-set DEFAULT_ETR_LOCATOR
   IPv4-interface Loopback0 priority 10 weight 10
@@ -329,9 +316,9 @@ router lisp
   import publication publisher 172.20.16.2
   itr map-resolver 172.20.16.1
   itr map-resolver 172.20.16.2
-  etr map-server 172.20.16.1 key 7 115C415646475309557979742A67602116 domain-id 578399941
+  etr map-server 172.20.16.1 key 7 135544475B5B072B2F767D676176175314 domain-id 2889545188
   etr map-server 172.20.16.1 proxy-reply
-  etr map-server 172.20.16.2 key 7 13504F415A595C2F7A777A633776460413 domain-id 578399941
+  etr map-server 172.20.16.2 key 7 055B555A711B4D081D5742465F58007E29 domain-id 2889545188
   etr map-server 172.20.16.2 proxy-reply
   etr
   sgt
@@ -348,9 +335,9 @@ router lisp
   itr map-resolver 172.20.16.1
   itr map-resolver 172.20.16.2
   itr
-  etr map-server 172.20.16.1 key 7 101B514A54424A0E5D57787B267C663627
+  etr map-server 172.20.16.1 key 7 12495642425C0F052E79717C6761264705
   etr map-server 172.20.16.1 proxy-reply
-  etr map-server 172.20.16.2 key 7 0874141D584C5D1243585E54287F712B36
+  etr map-server 172.20.16.2 key 7 0256570E5B510C20481C5C4D5143165F0E
   etr map-server 172.20.16.2 proxy-reply
   etr
   map-server
@@ -362,7 +349,7 @@ router lisp
   service ipv4
    eid-table vrf CORP_VN
    database-mapping 0.0.0.0/0 locator-set DEFAULT_ETR_LOCATOR default-etr local
-   database-mapping 172.17.0.0/30 locator-set rloc_f1ae19de-668b-4f26-bad7-59d3d89ff0b3
+   database-mapping 172.17.0.8/30 locator-set rloc_f1ae19de-668b-4f26-bad7-59d3d89ff0b3
    exit-service-ipv4
   !
   exit-instance-id
@@ -372,20 +359,16 @@ router lisp
   service ipv4
    eid-table vrf GUEST_VN
    database-mapping 0.0.0.0/0 locator-set DEFAULT_ETR_LOCATOR default-etr local
-   database-mapping 172.17.0.4/30 locator-set rloc_f1ae19de-668b-4f26-bad7-59d3d89ff0b3
+   database-mapping 172.17.0.12/30 locator-set rloc_f1ae19de-668b-4f26-bad7-59d3d89ff0b3
    exit-service-ipv4
   !
   exit-instance-id
  !
  site site_uci
   description map-server configured from Cisco DNA-Center
-  authentication-key 7 075A791F1F5C41004641595C067E7E272D
+  authentication-key 7 0256570E5B510C20481C5C4D5143165F0E
   eid-record instance-id 4099 0.0.0.0/0 accept-more-specifics
-  eid-record instance-id 4099 10.1.1.0/24 accept-more-specifics
   eid-record instance-id 4100 0.0.0.0/0 accept-more-specifics
-  eid-record instance-id 4100 10.10.10.0/24 accept-more-specifics
-  eid-record instance-id 8188 any-mac
-  eid-record instance-id 8189 any-mac
   allow-locator-default-etr instance-id 4099 ipv4
   allow-locator-default-etr instance-id 4100 ipv4
   exit-site
@@ -414,38 +397,31 @@ router bgp 65001
  exit-address-family
  !
  address-family vpnv4
-  bgp aggregate-timer 0
   neighbor 172.20.16.2 activate
   neighbor 172.20.16.2 send-community both
   neighbor 172.20.16.2 route-map DENY_0_FABRIC_PREFIX out
  exit-address-family
  !
  address-family ipv4 vrf CORP_VN
-  bgp aggregate-timer 0
-  network 10.1.1.1 mask 255.255.255.255
-  network 172.17.0.0 mask 255.255.255.252
-  aggregate-address 10.1.1.0 255.255.255.0 summary-only attribute-map SET_FABRIC_SUBNET_COMMUNITY
+  network 172.17.0.8 mask 255.255.255.252
   redistribute lisp metric 10 route-map LISP_TO_BGP
-  neighbor 172.17.0.2 remote-as 65100
-  neighbor 172.17.0.2 update-source Vlan3001
-  neighbor 172.17.0.2 activate
-  neighbor 172.17.0.2 send-community both
-  neighbor 172.17.0.2 weight 65535
-  neighbor 172.17.0.2 route-map DROP_FABRIC_ROUTES in
+  neighbor 172.17.0.10 remote-as 65100
+  neighbor 172.17.0.10 update-source Vlan3010
+  neighbor 172.17.0.10 activate
+  neighbor 172.17.0.10 send-community both
+  neighbor 172.17.0.10 weight 65535
+  neighbor 172.17.0.10 route-map DROP_FABRIC_ROUTES in
  exit-address-family
  !
  address-family ipv4 vrf GUEST_VN
-  bgp aggregate-timer 0
-  network 10.10.10.1 mask 255.255.255.255
-  network 172.17.0.4 mask 255.255.255.252
-  aggregate-address 10.10.10.0 255.255.255.0 summary-only attribute-map SET_FABRIC_SUBNET_COMMUNITY
+  network 172.17.0.12 mask 255.255.255.252
   redistribute lisp metric 10 route-map LISP_TO_BGP
-  neighbor 172.17.0.6 remote-as 65100
-  neighbor 172.17.0.6 update-source Vlan3010
-  neighbor 172.17.0.6 activate
-  neighbor 172.17.0.6 send-community both
-  neighbor 172.17.0.6 weight 65535
-  neighbor 172.17.0.6 route-map DROP_FABRIC_ROUTES in
+  neighbor 172.17.0.14 remote-as 65100
+  neighbor 172.17.0.14 update-source Vlan3020
+  neighbor 172.17.0.14 activate
+  neighbor 172.17.0.14 send-community both
+  neighbor 172.17.0.14 weight 65535
+  neighbor 172.17.0.14 route-map DROP_FABRIC_ROUTES in
  exit-address-family
 !
 ip forward-protocol nd
@@ -455,17 +431,18 @@ ip http server
 ip http authentication local
 ip http secure-server
 ip http max-connections 16
-ip http client source-interface GigabitEthernet0/0
+ip http client source-interface Loopback0
+ip tftp source-interface GigabitEthernet0/0
 ip route 0.0.0.0 0.0.0.0 172.16.0.1 254 name TEMP_FLOATING_ROUTE
-ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.2.2.200
+ip route vrf Mgmt-vrf 0.0.0.0 0.0.0.0 10.5.39.1
 ip ssh bulk-mode 131072
-ip ssh source-interface GigabitEthernet0/0
+ip ssh source-interface Loopback0
 !
 ip community-list 84 permit 844888
 ip community-list 95 permit 955999
 !
 ip access-list extended ACL_WEBAUTH_REDIRECT
- 20 deny ip any host 10.2.2.29
+ 20 deny ip any host 10.5.39.29
  500 permit tcp any any eq www
  600 permit tcp any any eq 443
  700 permit tcp any any eq 8443
@@ -482,27 +459,24 @@ ip prefix-list L3HANDOFF_PREFIXES seq 147399296 permit 172.17.0.8/30
 ip prefix-list L3HANDOFF_PREFIXES seq 166672128 permit 172.17.0.12/30
 ip radius source-interface Loopback0 
 ip sla 1
- icmp-echo 10.2.2.100 source-ip 172.17.0.1
-  vrf CORP_VN
+ icmp-echo 172.20.16.2 source-ip 172.20.16.1
   threshold 3
 ip sla schedule 1 life forever start-time now
 ip sla 2
- icmp-echo 10.2.2.100 source-ip 172.17.0.5
-  vrf GUEST_VN
+ icmp-echo 10.5.39.27 source-ip 172.17.0.9
+  vrf CORP_VN
   threshold 3
 ip sla schedule 2 life forever start-time now
 ip sla 3
- icmp-echo 172.20.16.2 source-ip 172.20.16.1
+ icmp-echo 10.5.39.27 source-ip 172.17.0.13
+  vrf GUEST_VN
   threshold 3
 ip sla schedule 3 life forever start-time now
 logging source-interface Loopback0
-logging host 10.2.2.15 vrf Mgmt-vrf
+logging host 10.5.39.15
 !
-route-map DROP_FABRIC_ROUTES deny 5 
- description Drop looped fabric routes (community 955999)
- match community 95
-!
-route-map DROP_FABRIC_ROUTES permit 30 
+route-map SET_FABRIC_SUBNET_COMMUNITY permit 5 
+ set community 955999
 !
 route-map LISP_TO_BGP deny 5 
  description Deny prefixes learnt from BGP to LISP
@@ -512,8 +486,11 @@ route-map LISP_TO_BGP permit 10
  description Set fabric prefix community-2 for remote fabric routes
  set community 955999
 !
-route-map SET_FABRIC_SUBNET_COMMUNITY permit 5 
- set community 955999
+route-map DROP_FABRIC_ROUTES deny 5 
+ description Drop looped fabric routes (community 955999)
+ match community 95
+!
+route-map DROP_FABRIC_ROUTES permit 30 
 !
 route-map DENY_0_FABRIC_PREFIX deny 5 
  description Deny IPV4 default route
@@ -529,7 +506,7 @@ route-map DENY_0_FABRIC_PREFIX permit 15
 !
 snmp-server community ro RO
 snmp-server community rw RW
-snmp-server trap-source GigabitEthernet0/0
+snmp-server trap-source Loopback0
 snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
 snmp-server enable traps flowmon
 snmp-server enable traps entity-perf throughput-notif
@@ -547,10 +524,10 @@ snmp-server enable traps ospf cisco-specific errors
 snmp-server enable traps ospf cisco-specific retransmit
 snmp-server enable traps ospf cisco-specific lsa
 snmp-server enable traps bfd
-snmp-server enable traps license
 snmp-server enable traps smart-license
 snmp-server enable traps auth-framework sec-violation
 snmp-server enable traps rep
+snmp-server enable traps aaa_server
 snmp-server enable traps memory bufferpeak
 snmp-server enable traps config-copy
 snmp-server enable traps config
@@ -618,7 +595,7 @@ snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
 snmp-server enable traps rf
 snmp-server enable traps mpls vpn
 snmp-server enable traps mpls rfc vpn
-snmp-server host 10.2.2.15 vrf Mgmt-vrf version 2c rw 
+snmp-server host 10.5.39.15 version 2c rw 
 snmp ifmib ifindex persist
 !
 radius-server attribute 6 on-for-login-auth
@@ -630,17 +607,18 @@ radius-server attribute 31 send nas-port-detail mac-only
 radius-server dead-criteria time 5 tries 3
 radius-server deadtime 3
 !
-radius server dnac-radius_10.2.2.29
- address ipv4 10.2.2.29 auth-port 1812 acct-port 1813
+radius server dnac-radius_10.5.39.29
+ address ipv4 10.5.39.29 auth-port 1812 acct-port 1813
  timeout 4
  retransmit 3
  automate-tester username dummy ignore-acct-port probe-on
- pac key 7 153133000528386A796166
+ pac key 7 03276307070D32021F5B4A
 !
 !
 !
 control-plane
  service-policy input system-cpp-policy
+!
 !
 cts role-based enforcement
 !
@@ -655,13 +633,6 @@ line vty 5 15
  login authentication VTY_authen
  transport input ssh
 !
-call-home
- ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
- ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
- contact-email-addr sch-smart-licensing@cisco.com
- profile "CiscoTAC-1"
-  active
-  destination transport-method http
 !
 !
 !

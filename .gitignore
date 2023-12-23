@@ -7,6 +7,7 @@ __pycache__/
 testbeds/dual/.env
 testbeds/dcloud1/.env
 testbeds/single/
+testbeds/multi_site/
 
 # C extensions
 *.so

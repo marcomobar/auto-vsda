@@ -1,6 +1,6 @@
 all:
   vars:
-    virl_lab: Dual-Border-Edge
+    virl_lab: Dual
     virl_lab_file: "../../../testbeds/dual/files/cml.yaml"
     virl_path: "../../../testbeds/dual/"
     vcenter_host: "{{ lookup('env','VCENTER_HOST') }}"
@@ -18,7 +18,6 @@ all:
       hosts:
         vdnac:
         vise:
-        cml2.5:
     nodes:
       vars:
         ansible_network_os: ios
@@ -31,10 +30,9 @@ all:
       children:
         transport:
           hosts:
-            fusion:
-              ansible_host: 10.2.2.1
+            fusion-1:
+              ansible_host: 10.5.39.44
             shared-services:
-            dnac-ise:
             mgmt-bcp-1:
             mgmt-bcp-2:
             mgmt-e-1:
@@ -44,36 +42,31 @@ all:
             borders:
               hosts:
                 bcp-1:
-                  ansible_host: 10.2.2.11
-                  management_ip: 10.2.2.11
+                  ansible_host: 10.5.39.18
+                  management_ip: 10.5.39.18
                   management_mask: 255.255.255.0
-                  management_gateway: 10.2.2.200
+                  management_gateway: 10.5.39.1
                 bcp-2:
-                  ansible_host: 10.2.2.12
-                  management_ip: 10.2.2.12
+                  ansible_host: 10.5.39.19
+                  management_ip: 10.5.39.19
                   management_mask: 255.255.255.0
-                  management_gateway: 10.2.2.200
+                  management_gateway: 10.5.39.1
             edges:
               hosts:
                 e-1:
-                  ansible_host: 10.2.2.13
-                  management_ip: 10.2.2.13
+                  ansible_host: 10.5.39.20
+                  management_ip: 10.5.39.20
                   management_mask: 255.255.255.0
-                  management_gateway: 10.2.2.200
+                  management_gateway: 10.5.39.1
                 e-2:
-                  ansible_host: 10.2.2.14
-                  management_ip: 10.2.2.14
+                  ansible_host: 10.5.39.21
+                  management_ip: 10.5.39.21
                   management_mask: 255.255.255.0
-                  management_gateway: 10.2.2.200
+                  management_gateway: 10.5.39.1
     linux:
       children:
-        servers:
-          hosts:
-            net-services:
         endpoints:
           hosts:
-            m-1:
-            m-2:
-            m-3:
-
-    
+            c-1:
+            c-2:
+            c-3:
